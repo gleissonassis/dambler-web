@@ -4,12 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+import Simplert from 'vue2-simplert'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 
 Vue.config.productionTip = false
 
+Vue.component('simplert', Simplert)
 Vue.use(VueResource)
 
 /* eslint-disable no-new */
