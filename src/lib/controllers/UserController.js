@@ -8,6 +8,22 @@ class UserController {
         .catch(reject)
     })
   }
+
+  login (email, password) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post('/api/v1/users/auth', {email, password})
+        .then(user => {
+          localStorage.setItem('currentUser', user.token)
+          Vue.http.headers.common['Authorization'] = 'Bearer ' + user.token
+          resolve(user)
+        })
+        .catch(reject)
+    })
+  }
+
+  logout () {
+    localStorage.setItem('currentUser', null)
+  }
 }
 
 export default UserController

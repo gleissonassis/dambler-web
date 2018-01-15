@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/home'
-import LoginBox from '@/components/common/loginBox'
-import RegisterBox from '@/components/common/registerBox'
+import LoginBox from '@/components/common/LoginBox'
+import RegisterBox from '@/components/common/RegisterBox'
 
 Vue.use(Router)
 

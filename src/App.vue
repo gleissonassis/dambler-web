@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import master from './components/master'
+import master from './components/Master'
 export default {
   name: 'App',
   components: {

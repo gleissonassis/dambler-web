@@ -1,24 +1,94 @@
 <template>
   <form>
+    <simplert :useRadius="true"
+              :useIcon="true"
+              ref="simplert">
+    </simplert>
     <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <label for="email">E-mail*</label>
+      <input type="email" :class="[{'is-invalid': this.isUserEmailInvalid}, 'form-control']" v-model="user.email" id="email" aria-describedby="emailHelp" placeholder="email@dominio.com">
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      <label for="password">Senha*</label>
+      <input type="password" :class="[{'is-invalid': this.isUserPasswordInvalid}, 'form-control']" v-model="user.password" id="password" placeholder="Sua senha">
     </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    <div class="form-group">
+      <button class="btn btn-primary" v-on:click="login">Entrar</button>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </template>
 
 <script>
-export default {
+import UserController from '@/lib/controllers/UserController'
 
+export default {
+  data: function () {
+    return {
+      validateFields: false,
+      user: {}
+    }
+  },
+  computed: {
+    isFormInvalid () {
+      return !this.user.email ||
+        !this.user.password
+    },
+    isUserEmailInvalid () {
+      return this.validateFields && !this.user.email
+    },
+    isUserPasswordInvalid () {
+      return this.validateFields && !this.user.password
+    }
+  },
+
+  mounted () {
+  },
+
+  methods: {
+
+    login () {
+      this.validateFields = true
+
+      var controller = new UserController()
+
+      if (this.isFormInvalid) {
+        this.$refs.simplert.openSimplert({
+          title: 'Campos não preenchidos!',
+          message: 'Todos os campos destacados com * precisam ser preenchidos!',
+          type: 'error',
+          customCloseBtnText: 'Ok'
+        })
+      } else {
+        controller.login(this.user.email, this.user.password)
+          .then(() => {
+            this.$refs.simplert.openSimplert({
+              title: 'Sucesso!',
+              message: 'Login realizado com sucesso!',
+              type: 'info',
+              customCloseBtnText: 'Ok'
+            })
+          })
+          .catch(error => {
+            switch (error.status) {
+              case 404:
+                this.$refs.simplert.openSimplert({
+                  title: 'Login inválido!',
+                  message: 'Não foi possível acessar a plataforma com as credenciais informadas.',
+                  type: 'error',
+                  customCloseBtnText: 'Ok'
+                })
+                break
+              default:
+                this.$refs.simplert.openSimplert({
+                  title: 'OMG!!!',
+                  message: 'Algo muito estranho está acontecendo com nossos servidores! Tente novamente mais tarde',
+                  type: 'error',
+                  customCloseBtnText: 'Ok'
+                })
+            }
+          })
+      }
+    }
+  }
 }
 </script>
