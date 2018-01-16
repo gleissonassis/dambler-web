@@ -48,6 +48,7 @@ export default {
 
     login () {
       this.validateFields = true
+      var self = this
 
       var controller = new UserController()
 
@@ -61,14 +62,10 @@ export default {
       } else {
         controller.login(this.user.email, this.user.password)
           .then(() => {
-            this.$refs.simplert.openSimplert({
-              title: 'Sucesso!',
-              message: 'Login realizado com sucesso!',
-              type: 'info',
-              customCloseBtnText: 'Ok'
-            })
+            self.$router.push('/auctions/online')
           })
           .catch(error => {
+            alert(error)
             switch (error.status) {
               case 404:
                 this.$refs.simplert.openSimplert({

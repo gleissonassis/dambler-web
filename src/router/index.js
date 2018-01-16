@@ -14,6 +14,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/auctions/online',
+      name: 'AuctionsOnline',
+      component: Home
+    },
+    {
       path: '/login',
       name: 'Login',
       component: LoginBox
