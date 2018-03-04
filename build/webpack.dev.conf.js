@@ -46,7 +46,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "http://dambler.gdxconsulting.com.br:5000",
         pathRewrite: {"^/api" : ""}
       }
     },
